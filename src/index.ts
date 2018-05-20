@@ -26,6 +26,13 @@ export function patchWith<T = any>(handler: (cfg: T) => T) {
 }
 
 if (require.main === module) {
+  const tsReg = process.argv.findIndex( a => a === '--tsnode');
+
+  if (tsReg > -1) {
+    process.argv.splice(tsReg, 1);  
+    require('ts-node/register');
+  }
+
   const idx = process.argv.findIndex( a => a === '--webpack');
 
   if (idx === -1 || !process.argv[idx+1]) {
