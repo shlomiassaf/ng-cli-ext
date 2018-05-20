@@ -1,6 +1,6 @@
 {
   "name": "ng-cli-ext",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Exposes webpack config at runtime from @angular/cli just before it runs.",
   "bin": "dist/index.js",
   "main": "dist/index.js",
@@ -16,9 +16,7 @@
   },
   "devDependencies": {
     "@types/node": "^10.1.0",
-    "typescript": "^2.8.3"
-  },
-  "dependencies": {
+    "typescript": "^2.8.3",
     "@angular-devkit/build-angular": "^0.6.3",
     "@angular-devkit/core": "^0.6.3",
     "@angular-devkit/schematics": "^0.6.3",
