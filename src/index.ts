@@ -4,6 +4,12 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Path, getSystemPath, normalize, resolve, virtualFs } from '@angular-devkit/core';
 import { NormalizedBrowserBuilderSchema } from '@angular-devkit/build-angular';
+import { createECDH } from 'crypto';
+
+function exitWithError(error: string | Error) {
+  console.error(error);
+  process.exit(1);
+}
 
 export function patchWith<T = any>(handler: (cfg: T) => T) {
   console.log('PATCHING @angular/cli with custom webpack config handler.\n');
@@ -36,20 +42,29 @@ if (require.main === module) {
   const idx = process.argv.findIndex( a => a === '--webpack');
 
   if (idx === -1 || !process.argv[idx+1]) {
-    throw new Error('ngext require a valid webpack configuration handler (--webpack)');
+    exitWithError('ng-ext-cli require a valid webpack configuration handler (--webpack)');    
+  } else {
+    const cfgRelativePath = process.argv[idx + 1];
+    const cfgFullPath = path.isAbsolute(cfgRelativePath)
+      ? cfgRelativePath
+      : path.join(process.cwd(), cfgRelativePath)
+    ;
+  
+    if (!fs.existsSync(cfgFullPath)) {
+      exitWithError(`Could not find webpack configuration handler file at ${cfgFullPath}`);
+    }
+  
+    process.argv.splice(idx, 2);
+  
+    let cfgHandler: (cfg: any) => any;
+    try {
+      cfgHandler = require(cfgFullPath);
+      if (typeof cfgHandler !== 'function') {
+        exitWithError(`Webpack configuration module does not export a function`);
+      }
+    } catch(error) {
+      exitWithError(error);
+    }
+    cfgHandler && patchWith(cfgHandler);
   }
-
-  const cfgRelativePath = process.argv[idx + 1];
-  const cfgFullPath = path.isAbsolute(cfgRelativePath)
-    ? cfgRelativePath
-    : path.join(process.cwd(), cfgRelativePath)
-  ;
-
-  if (!fs.existsSync(cfgFullPath)) {
-    console.log(`Could not find webpack configuration handler file at ${cfgFullPath}`);
-  }
-
-  process.argv.splice(idx, 2);
-  const cfgHandler = require(cfgFullPath);
-  patchWith(cfgHandler);
 }
