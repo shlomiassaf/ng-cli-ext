@@ -40,7 +40,7 @@ module.exports = function(webpackConfig) {
 > Providing a configuration file works in `ng-cli-ext` as well, but if you use it like that you better of use the original package, ngx-build-plus..
 
 #### Why?
-Using a function provides high level of control over the configuration file.
+Using a function provides a high level of control over the configuration file.
 
 Under the hood, `ngx-build-plus` is using [webpack-merge](https://github.com/survivejs/webpack-merge) to do the merging. `webpack-merge` has
 a lot of features and merging strategies which you can't use, with a function you
