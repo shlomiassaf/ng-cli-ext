@@ -1,25 +1,23 @@
 {
   "name": "ng-cli-ext",
-  "version": "0.0.7",
+  "version": "1.0.0",
   "description": "Exposes webpack config at runtime from @angular/cli just before it runs.",
-  "bin": "dist/index.js",
   "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "builders": "builders.json",
   "scripts": {
     "build": "./node_modules/.bin/tsc"
   },
   "license": "MIT",
-  "peerDependencies": {
-    "@angular-devkit/build-angular": "^0.6.3",
-    "@angular-devkit/core": "^0.6.3",
-    "@angular-devkit/schematics": "^0.6.3",
-    "@angular/cli": "^6.0.3"
+  "dependencies": {
+    "@angular-devkit/architect": "^0.7.1",
+    "@angular-devkit/build-angular": "^0.7.1",
+    "@angular-devkit/core": "^0.7.1",
+    "webpack-merge": "^4.1.2"
   },
   "devDependencies": {
+    "@angular/cli": "^6.0.3",
     "@types/node": "^10.1.0",
-    "typescript": "^2.8.3",
-    "@angular-devkit/build-angular": "^0.6.3",
-    "@angular-devkit/core": "^0.6.3",
-    "@angular-devkit/schematics": "^0.6.3",
-    "@angular/cli": "^6.0.3"
+    "typescript": "^2.8.3"
   }
 }
