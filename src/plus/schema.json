@@ -17,7 +17,7 @@
     "singleBundle": {
       "type": "boolean",
       "description": "Generate just one bundle",
-      "default": true
+      "default": false
     },
 
     "main": {
