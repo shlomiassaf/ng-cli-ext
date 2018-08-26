@@ -7,6 +7,9 @@ export function updateConfig(projectRoot: Path, extraWebpackConfig: string, conf
 
   if (path.extname(filePath) === '.ts') {
     try {
+      require('tsconfig-paths/register');
+    } catch (ex) { }
+    try {
       require('ts-node/register');
     } catch (ex) { }
   }

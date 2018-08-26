@@ -13,7 +13,9 @@ yarn ng-cli-ext -D
 ### Usage
 From version **1** `ng-cli-ext` is an almost identical copy of the library [ngx-build-plus](https://github.com/manfredsteyer/ngx-build-plus) with 2 changes:
 
-- You can use `.ts` config files (as long as `ts-node` exists)
+- You can use typescript files for webpack config files (make sure the pacakge `ts-node` is instaleld)
+
+  - You can can `import` alias names defined in your `tsconfig.json` (make sure the package `tsconfig-paths` is instaleld)
 
 - You can provide a function intsead of a configuration object. (read more below)
 
@@ -39,7 +41,37 @@ module.exports = function(webpackConfig) {
 
 > Providing a configuration file works in `ng-cli-ext` as well, but if you use it like that you better of use the original package, ngx-build-plus..
 
-#### Why?
+#### TS support
+
+Out of the box, using a typescript file as your webpack configuration will not work.
+
+This is due to the source loading the configuration, in this case the angular cli. The
+cli does not expect someone to load any TS file outside of the client build so there is
+not support.
+
+> Webpack does support such scenario, if you run a standalone webpack build it will work.
+
+`ng-cli-ext` will try to load the `ts-node` package before loading the config file so if
+it exists loading `*.ts` will work.
+
+#### TS support for paths
+
+`paths` is where we define alias names for relative import paths.
+
+```ts
+// instead of:
+import `../../../../mylib/index.ts`
+
+// we can write:
+import `mylib`;
+```
+
+If you're using [nx](https://nrwl.io/nx) to manage your repo (or using a mono-repo appraoch) this will come in handy.
+
+`ng-cli-ext` will try to load the `tsconfig-paths` package before loading the config file so if any import reference's to an alias defined in the configuration will work!
+
+#### Why
+
 Using a function provides a high level of control over the configuration file.
 
 Under the hood, `ngx-build-plus` is using [webpack-merge](https://github.com/survivejs/webpack-merge) to do the merging. `webpack-merge` has
