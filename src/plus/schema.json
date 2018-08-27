@@ -10,10 +10,16 @@
         "$ref": "#/definitions/assetPattern"
       }
     },
+
     "extraWebpackConfig": {
       "type": "string",
       "description": "Additional Webpack Config that gets merged with the default config."
     },
+    "tsConfigForExtraWebpackConfig": {
+      "type": "string",
+      "description": "Path to a tsconfig file that will be used to load extraWebpackConfig if extraWebpackConfig is a TS file."
+    },
+
     "singleBundle": {
       "type": "boolean",
       "description": "Generate just one bundle",

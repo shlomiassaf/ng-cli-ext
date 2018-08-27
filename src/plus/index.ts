@@ -3,7 +3,13 @@ import { BrowserBuilder } from '@angular-devkit/build-angular';
 import { Path, virtualFs } from '@angular-devkit/core';
 import { updateConfig } from '../utils';
 
-import { PlusBuilderSchema } from './schema';
+import { NormalizedBrowserBuilderSchema } from '@angular-devkit/build-angular';
+
+export interface PlusBuilderSchema extends NormalizedBrowserBuilderSchema {
+  extraWebpackConfig: string;
+  tsConfigForExtraWebpackConfig?: string;
+  singleBundle: boolean;
+}
 
 export class PlusBuilder extends BrowserBuilder  {
 
@@ -23,7 +29,7 @@ export class PlusBuilder extends BrowserBuilder  {
     }
     
     return options.extraWebpackConfig
-      ? updateConfig(projectRoot, options.extraWebpackConfig, config)
+      ? updateConfig(projectRoot, options.extraWebpackConfig, config, options.tsConfigForExtraWebpackConfig)
       : config
     ;
   }

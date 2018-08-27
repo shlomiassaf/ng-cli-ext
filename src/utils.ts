@@ -2,7 +2,7 @@ import { Path, getSystemPath } from '@angular-devkit/core';
 import * as path from 'path';
 const webpackMerge = require('webpack-merge');
 
-export function updateConfig(projectRoot: Path, extraWebpackConfig: string, config: any): any {
+export function updateConfig(projectRoot: Path, extraWebpackConfig: string, config: any, tsConfigPath?: string): any {
   const filePath = path.resolve(getSystemPath(projectRoot), extraWebpackConfig);
 
   if (path.extname(filePath) === '.ts') {
@@ -10,7 +10,14 @@ export function updateConfig(projectRoot: Path, extraWebpackConfig: string, conf
       require('tsconfig-paths/register');
     } catch (ex) { }
     try {
-      require('ts-node/register');
+      const tsNode = require('ts-node');
+      if (tsConfigPath) {
+        tsNode.register({
+          project: path.resolve(getSystemPath(projectRoot), tsConfigPath),
+        });
+      } else {
+        tsNode.register();
+      }    
     } catch (ex) { }
   }
 

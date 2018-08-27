@@ -6,7 +6,7 @@ import { updateConfig } from '../utils';
 
 export interface BrowserBuilderSchema extends BrowserBuilderSchemaBase {
   extraWebpackConfig: string;
-  singleBundle: boolean;
+  tsConfigForExtraWebpackConfig?: string;
 }
 
 export class DevServerBuilder extends DevServerBuilderBase {
@@ -15,7 +15,7 @@ export class DevServerBuilder extends DevServerBuilderBase {
     
     let config = super.buildWebpackConfig(root, projectRoot, host, browserOptions);
     return browserOptions.extraWebpackConfig
-      ? updateConfig(projectRoot, browserOptions.extraWebpackConfig, config)
+      ? updateConfig(projectRoot, browserOptions.extraWebpackConfig, config, browserOptions.tsConfigForExtraWebpackConfig)
       : config
     ;
   }
